@@ -1,0 +1,32 @@
+layout {
+	tab name="Rust Project" {
+        pane split_direction="vertical" {
+    		pane command="fish" name="Editor" {
+    			args "-c" "nvim" "src/main.rs";
+    		    close_on_exit true;
+    		}
+
+    		pane split_direction="horizontal" {
+	    		pane command="mold" name="Tests & clippy" {
+	    			args "--run" "cargo" "watch" "-c" "-x" "nextest run" "-x" "clippy";
+	    		}
+	    	}
+	    }
+
+	    floating_panes {
+		    pane command="mold" name="Run Program" {
+			    args "--run" "cargo" "run";
+			    start_suspended true;
+		    }
+			pane name="Misc";
+		    pane command="fish" {
+				args "-c" "zellij action toggle-floating-panes"
+      			close_on_exit true;
+			}
+	    }
+
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar";
+        }
+    }
+}

@@ -1,0 +1,183 @@
+global !p
+
+def math():
+    return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+
+def env(name):
+    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')") 
+    return x != '0' and y != '0'
+
+def tikz():
+    return env("tikzpicture")
+
+def graph():
+    return env("axis")
+endglobal
+
+snippet doc "Document" bA
+\documentclass[${1:12pt}]{${2:article}}
+
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{units}
+
+\title{${3:`!p snip.rv=fn.replace(".tex", "").title()`}}
+\author{${4:Vivax}}
+\date{${5:`date +%F`}}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+$0
+
+\end{document}
+endsnippet
+
+
+snippet beg "begin{} / end{}" bA 
+\begin{$1}
+	$0
+\end{$1}
+endsnippet
+
+snippet mi "$$" wA
+$$1$$0
+endsnippet
+
+
+snippet md "display math" wA
+\[
+$1
+\] $0
+endsnippet
+
+snippet ma "Align math" bA
+\begin{align*}
+$1
+\end{align*}
+$0
+endsnippet
+
+
+context "math()"
+snippet * "\cdot" iA
+\cdot $0
+endsnippet
+
+
+context "math()"
+snippet -> "\to" iA
+\to $0
+endsnippet
+
+context "math()"
+snippet pi "\pi" wA
+\pi $0
+endsnippet
+
+
+context "math()"
+snippet "(\w+(_(\w|\{\w+\}))?)(,\.|\.,)" "\vec" riA 
+\vec{`!p snip.rv=match.group(1)`}
+endsnippet
+
+context "math()"
+snippet "\\cdot(\s*\\vec\{\w+\}.?)" "Vector Times" riA 
+\times`!p snip.rv=match.group(1)`
+endsnippet
+
+context "math()"
+snippet "(\\vec\{\w+\}\s*)\\cdot(.?)" "Vector Times" riA
+`!p snip.rv=match.group(1)`\times`!p snip.rv=match.group(2) or ""`
+endsnippet
+
+context "math()"
+snippet sqrt "\sqrt" wA
+\sqrt{$1}$0
+endsnippet
+
+context "math()"
+snippet ~= "\approx" A
+\approx $0
+endsnippet
+
+
+context "math()"
+snippet / "Fraction" A
+\frac{${VISUAL}}{$1}$0
+endsnippet
+
+snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
+\\frac{`!p snip.rv = match.group(1)`}{$1}$0
+endsnippet
+
+priority 1000
+snippet '^.*\)/' "() Fraction" wrA
+`!p
+stripped = match.string[:-1]
+depth = 0
+i = len(stripped) - 1
+while True:
+	if stripped[i] == ')': depth += 1
+	if stripped[i] == '(': depth -= 1
+	if depth == 0: break;
+	i -= 1
+snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
+`{$1}$0
+endsnippet
+
+context "math()"
+snippet "_(\w\w)" "_{}" rA
+_{`!p snip.rv=match.group(1)`$1}$0
+endsnippet
+
+context "math()"
+snippet +- "plus minus" A
+\pm $0
+endsnippet
+
+context "math()"
+snippet "=(.*?)__" "answer" rA
+=\underline{\underline{`!p snip.rv=match.group(1)`}}$0
+endsnippet
+
+snippet graph "Tikz grap" bA
+\begin{tikzpicture}
+\begin{axis}[
+	axis lines = center,
+	xlabel=${1:$X$},
+	ylabel=${2:$Y$},
+	legend pos = outer north east]
+
+	$3
+
+\end{axis}
+\end{tikzpicture}$0
+endsnippet
+
+context "graph()"
+snippet plot "Plot" bA
+\addplot[domain=$1:$2,samples=${3:100},color=$4] {$5};
+\addlegendentry {${6:$$5$}}; 
+$0
+endsnippet
+
+snippet draw "Tikz grap" bA
+\begin{tikzpicture}
+
+	$1
+
+\end{tikzpicture}$0
+endsnippet
+
+snippet center "Center stuff" bA
+\begin{center}
+$1
+\end{center}
+$0
+endsnippet
+
