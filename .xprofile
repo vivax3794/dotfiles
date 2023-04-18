@@ -1,3 +1,5 @@
+feh --bg-center /home/vivax/wallpapers/pexels-jot-singh-2179483.jpg
+
 setxkbmap -option caps:escape
 
 xmodmap -e "keycode 87 = F1"
@@ -11,4 +13,3 @@ xmodmap -e "keycode 80 = F8"
 xmodmap -e "keycode 81 = F9"
 
 xrandr --output DP-0 --auto --primary --output HDMI-0 --auto --right-of DP-0 --output DP-3 --auto --left-of DP-0
-bash /home/vivax/scripts/wallpaper.sh
