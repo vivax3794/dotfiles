@@ -1,8 +1,10 @@
 -- This MUST be first
-require("v_plugins")
+require("plugins")
 
-require("v_keys")
-require("v_look")
-require("v_misc")
+require("keys")
+require("look")
+require("status")
+require("misc")
+
 
 require("lsp.index")

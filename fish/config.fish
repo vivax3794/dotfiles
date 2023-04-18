@@ -34,11 +34,13 @@ if status is-interactive
     # Stuff
     alias m "mold -run"
 
+    alias ls="exa"
+
     # zellij
     alias zt "zellij action new-tab --layout"
 
     # Colors
-    wal -R -e > /dev/null
+    # wal -R -e > /dev/null
 end
 
 # Created by `pipx` on 2023-01-18 19:33:59

@@ -16,11 +16,11 @@
 # from the generated scheme.
 # NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
 # it fails to get colors from Xresources.
-set_from_resource $fg i3wm.color7 #f0f0f0
-set_from_resource $bg i3wm.color2 #f0f0f0
+set $fg #3760bf
+set $bg #e1e2e7
 
 # class                 border  backgr. text indicator child_border
-client.focused          $fg     $fg     $fg  $fg       $fg
+client.focused          $fg     $fg     $bg  $fg       $fg
 client.focused_inactive $bg     $bg     $fg  $bg       $bg
 client.unfocused        $bg     $bg     $fg  $bg       $bg
 client.urgent           $bg     $bg     $fg  $bg       $bg
@@ -73,6 +73,7 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec kitty zellij
 # 3-sensible-terminal
+bindsym $mod+Shift+s exec fish "--command" "firefox --search '$(xclip -o -sel clip)'"
 
 # kill focused window
 bindsym $mod+Shift+q kill
